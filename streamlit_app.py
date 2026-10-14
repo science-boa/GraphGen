@@ -9,7 +9,8 @@ st.set_page_config(
 
 st.title("📊 Student Practice Graph Generator")
 st.write(
-    "Configure your parameters in the sidebar and download your blank graph instantly."
+    "Configure your parameters in the sidebar and download your blank graph"
+    " instantly."
 )
 
 # --- Sidebar Controls ---
@@ -42,16 +43,24 @@ if x_min >= x_max or y_min >= y_max:
   st.sidebar.warning("⚠️ Max values must be greater than Min values.")
   st.stop()
 
-st.sidebar.subheader("Grid Settings")
-major_interval = st.sidebar.number_input(
-    "Major Gridline Interval", min_value=0.1, max_value=100.0, value=5.0
+# --- Independent Grid Settings ---
+st.sidebar.subheader("X-Axis Grid Settings")
+x_major_interval = st.sidebar.number_input(
+    "X Major Interval", min_value=0.1, max_value=100.0, value=5.0
 )
-minor_subdivisions = st.sidebar.selectbox(
-    "Minor Gridlines per Interval", [1, 2, 5], index=1
+x_minor_subdivisions = st.sidebar.selectbox(
+    "X Minor Subdivisions per Interval", [1, 2, 5], index=1, key="x_sub"
+)
+
+st.sidebar.subheader("Y-Axis Grid Settings")
+y_major_interval = st.sidebar.number_input(
+    "Y Major Interval", min_value=0.1, max_value=100.0, value=5.0
+)
+y_minor_subdivisions = st.sidebar.selectbox(
+    "Y Minor Subdivisions per Interval", [1, 2, 5], index=1, key="y_sub"
 )
 
 # --- Main Preview Area ---
-# Smaller default aspect ratio to fit screens better
 fig, ax = plt.subplots(figsize=(6, 4.5))
 
 # Set limits and labels
@@ -61,17 +70,26 @@ ax.set_title(title, fontsize=13, fontweight="bold")
 ax.set_xlabel(x_label, fontsize=11)
 ax.set_ylabel(y_label, fontsize=11)
 
-# Set Major Ticks & Grid
-major_xticks = np.arange(x_min, x_max + (major_interval * 0.001), major_interval)
-major_yticks = np.arange(y_min, y_max + (major_interval * 0.001), major_interval)
+# X-Axis Major and Minor Ticks & Grid
+major_xticks = np.arange(
+    x_min, x_max + (x_major_interval * 0.001), x_major_interval
+)
 ax.set_xticks(major_xticks)
-ax.set_yticks(major_yticks)
-
-# Set Minor Ticks & Grid for difficulty adjustment
-minor_interval = major_interval / minor_subdivisions
-minor_xticks = np.arange(x_min, x_max + (minor_interval * 0.001), minor_interval)
-minor_yticks = np.arange(y_min, y_max + (minor_interval * 0.001), minor_interval)
+x_minor_interval = x_major_interval / x_minor_subdivisions
+minor_xticks = np.arange(
+    x_min, x_max + (x_minor_interval * 0.001), x_minor_interval
+)
 ax.set_xticks(minor_xticks, minor=True)
+
+# Y-Axis Major and Minor Ticks & Grid
+major_yticks = np.arange(
+    y_min, y_max + (y_major_interval * 0.001), y_major_interval
+)
+ax.set_yticks(major_yticks)
+y_minor_interval = y_major_interval / y_minor_subdivisions
+minor_yticks = np.arange(
+    y_min, y_max + (y_minor_interval * 0.001), y_minor_interval
+)
 ax.set_yticks(minor_yticks, minor=True)
 
 # Grid styles
