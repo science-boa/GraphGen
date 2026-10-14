@@ -60,13 +60,29 @@ y_minor_subdivisions = st.sidebar.selectbox(
     "Y Minor Subdivisions per Interval", [1, 2, 5], index=1, key="y_sub"
 )
 
-# --- Grid Appearance Sliders ---
+# --- Grid Appearance Controls (Colors, Thickness, Darkness) ---
 st.sidebar.subheader("Grid Appearance")
+
+# Major Grid Styles
+major_color = st.sidebar.color_picker(
+    "Major Grid Color", value="#1b365d"
+)  # Deeper navy default
+major_lw = st.sidebar.slider(
+    "Major Line Thickness", 0.5, 2.0, 1.0, 0.1, key="major_thickness"
+)
 major_alpha = st.sidebar.slider(
-    "Major Gridline Darkness", 0.0, 1.0, 0.8, 0.05, key="major_darkness"
+    "Major Gridline Darkness", 0.0, 1.0, 0.9, 0.05, key="major_darkness"
+)
+
+# Minor Grid Styles
+minor_color = st.sidebar.color_picker(
+    "Minor Grid Color", value="#4a779d"
+)  # Darker blue default instead of pastel
+minor_lw = st.sidebar.slider(
+    "Minor Line Thickness", 0.2, 1.5, 0.6, 0.1, key="minor_thickness"
 )
 minor_alpha = st.sidebar.slider(
-    "Minor Gridline Darkness", 0.0, 1.0, 0.4, 0.05, key="minor_darkness"
+    "Minor Gridline Darkness", 0.0, 1.0, 0.6, 0.05, key="minor_darkness"
 )
 
 # --- Main Preview Area ---
@@ -101,19 +117,19 @@ minor_yticks = np.arange(
 )
 ax.set_yticks(minor_yticks, minor=True)
 
-# Grid styles with dynamic transparency/darkness applied via alpha
+# Apply custom colors, line thickness, and darkness
 ax.grid(
     which="major",
-    color="#2b5c8f",
+    color=major_color,
     linestyle="-",
-    linewidth=0.8,
+    linewidth=major_lw,
     alpha=major_alpha,
 )
 ax.grid(
     which="minor",
-    color="#a3c1e0",
+    color=minor_color,
     linestyle=":",
-    linewidth=0.5,
+    linewidth=minor_lw,
     alpha=minor_alpha,
 )
 
