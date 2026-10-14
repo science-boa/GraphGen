@@ -60,6 +60,15 @@ y_minor_subdivisions = st.sidebar.selectbox(
     "Y Minor Subdivisions per Interval", [1, 2, 5], index=1, key="y_sub"
 )
 
+# --- Grid Appearance Sliders ---
+st.sidebar.subheader("Grid Appearance")
+major_alpha = st.sidebar.slider(
+    "Major Gridline Darkness", 0.0, 1.0, 0.8, 0.05, key="major_darkness"
+)
+minor_alpha = st.sidebar.slider(
+    "Minor Gridline Darkness", 0.0, 1.0, 0.4, 0.05, key="minor_darkness"
+)
+
 # --- Main Preview Area ---
 fig, ax = plt.subplots(figsize=(6, 4.5))
 
@@ -92,9 +101,21 @@ minor_yticks = np.arange(
 )
 ax.set_yticks(minor_yticks, minor=True)
 
-# Grid styles
-ax.grid(which="major", color="#2b5c8f", linestyle="-", linewidth=0.8)
-ax.grid(which="minor", color="#a3c1e0", linestyle=":", linewidth=0.5)
+# Grid styles with dynamic transparency/darkness applied via alpha
+ax.grid(
+    which="major",
+    color="#2b5c8f",
+    linestyle="-",
+    linewidth=0.8,
+    alpha=major_alpha,
+)
+ax.grid(
+    which="minor",
+    color="#a3c1e0",
+    linestyle=":",
+    linewidth=0.5,
+    alpha=minor_alpha,
+)
 
 # Center spines (axes lines through 0,0 if within range)
 ax.axhline(0, color="black", linewidth=1.2)
