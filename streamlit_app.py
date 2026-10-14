@@ -51,16 +51,17 @@ minor_subdivisions = st.sidebar.selectbox(
 )
 
 # --- Main Preview Area ---
-fig, ax = plt.subplots(figsize=(8, 6))
+# Smaller default aspect ratio to fit screens better
+fig, ax = plt.subplots(figsize=(6, 4.5))
 
 # Set limits and labels
 ax.set_xlim(x_min, x_max)
 ax.set_ylim(y_min, y_max)
-ax.set_title(title, fontsize=14, fontweight="bold")
-ax.set_xlabel(x_label, fontsize=12)
-ax.set_ylabel(y_label, fontsize=12)
+ax.set_title(title, fontsize=13, fontweight="bold")
+ax.set_xlabel(x_label, fontsize=11)
+ax.set_ylabel(y_label, fontsize=11)
 
-# Set Major Ticks & Grid (using a robust range step)
+# Set Major Ticks & Grid
 major_xticks = np.arange(x_min, x_max + (major_interval * 0.001), major_interval)
 major_yticks = np.arange(y_min, y_max + (major_interval * 0.001), major_interval)
 ax.set_xticks(major_xticks)
@@ -81,8 +82,8 @@ ax.grid(which="minor", color="#a3c1e0", linestyle=":", linewidth=0.5)
 ax.axhline(0, color="black", linewidth=1.2)
 ax.axvline(0, color="black", linewidth=1.2)
 
-# Display in Streamlit
-st.pyplot(fig)
+# Display in Streamlit with autoscaling container width enabled
+st.pyplot(fig, use_container_width=True)
 
 # --- Export Option ---
 buf = io.BytesIO()
